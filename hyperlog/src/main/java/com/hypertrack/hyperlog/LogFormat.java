@@ -57,21 +57,21 @@ public class LogFormat {
      * @param message  Log message that need to be customized.
      * @return Formatted Log Message that will store in database.
      */
-    String formatLogMessage(int logLevel, String message) {
+    String formatLogMessage(String tag, int logLevel, String message) {
         String timeStamp = HLDateTimeUtility.getCurrentTime();
         String senderName = BuildConfig.VERSION_NAME;
         String osVersion = "Android-" + Build.VERSION.RELEASE;
         String logLevelName = getLogLevelName(logLevel);
-        return getFormattedLogMessage(logLevelName, message, timeStamp, senderName, osVersion, deviceUUID);
+        return getFormattedLogMessage(tag, logLevelName, message, timeStamp, senderName, osVersion, deviceUUID);
     }
 
-    public String getFormattedLogMessage(String logLevelName, String message, String timeStamp,
+    public String getFormattedLogMessage(String tag, String logLevelName, String message, String timeStamp,
                                          String senderName, String osVersion, String deviceUUID) {
         if (deviceUUID == null) {
             deviceUUID = "DeviceUUID";
         }
 
-        return timeStamp + " | " + senderName + " : " + osVersion + " | " + deviceUUID + " | " + "[" + logLevelName + "]" + ": " + message;
+        return timeStamp + " | " + tag + " | " + senderName + " : " + osVersion + " | " + deviceUUID + " | " + "[" + logLevelName + "]" + ": " + message;
     }
 
     private static String getLogLevelName(int messageLogLevel) {
