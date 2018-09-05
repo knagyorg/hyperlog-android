@@ -456,18 +456,20 @@ public class HyperLog {
         //Check how many batches of device logs are available to push
         int logsBatchCount = getDeviceLogBatchCount();
 
-        while (logsBatchCount != 0) {
-            List<DeviceLogModel> deviceLogList = getDeviceLogs(deleteLogs);
-
+        for (int batchNo = 1; batchNo <= logsBatchCount; batchNo++) {
+            List<DeviceLogModel> deviceLogList = getDeviceLogs(false, batchNo);
             if (deviceLogList != null && !deviceLogList.isEmpty()) {
                 file = Utils.writeStringsToFile(mContext, getDeviceLogsAsStringList(deviceLogList), fileName);
-                if (file != null) {
-                    if (deleteLogs)
-                        mDeviceLogList.clearDeviceLogs(deviceLogList);
-                    HyperLog.i(TAG, "Log File has been created at " + file.getAbsolutePath());
+            }
+        }
+        if (file != null) {
+            if (deleteLogs) {
+                for (int batchNo = logsBatchCount; batchNo > 0; batchNo--) {
+                    List<DeviceLogModel> deviceLogList = getDeviceLogs (false, batchNo);
+                    mDeviceLogList.clearDeviceLogs (deviceLogList);
                 }
             }
-            logsBatchCount--;
+            HyperLog.i(TAG, "Log File has been created at " + file.getAbsolutePath());
         }
         return file;
     }

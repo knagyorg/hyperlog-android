@@ -191,7 +191,7 @@ class DeviceLogTable {
         String limit = String.valueOf(batch * DEVICE_LOG_REQUEST_QUERY_LIMIT) + ", " + String.valueOf(DEVICE_LOG_REQUEST_QUERY_LIMIT);
 
         Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_DEVICE_LOG}, null, null,
-                null, null, null, limit);
+                COLUMN_ID, null, null, limit);
 
         if (cursor == null || cursor.isClosed()) {
             return null;
